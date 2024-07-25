@@ -1,0 +1,51 @@
+package com.project.demo.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.project.demo.entity.Apartment;
+import com.project.demo.service.ApartmentService;
+
+@RestController
+@RequestMapping("/api/apartments")
+public class ApartmentController {
+	@Autowired
+    private ApartmentService apartmentService;
+
+    @GetMapping
+    public List<Apartment> getAllApartments() {
+        return apartmentService.getAllApartments();
+    }
+
+    @GetMapping("/{id}")
+    public Apartment getApartmentById(@PathVariable Long id) {
+        return apartmentService.getApartmentById(id)
+                .orElseThrow(() -> new RuntimeException("Apartment not found with id " + id));
+    }
+
+    @PostMapping
+    public Apartment createApartment(@RequestBody Apartment apartment) {
+        return apartmentService.createApartment(apartment);
+    }
+
+    @PutMapping("/{id}")
+    public Apartment updateApartment(@PathVariable Long id, @RequestBody Apartment apartment) {
+        return apartmentService.updateApartment(id, apartment);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteApartment(@PathVariable Long id) {
+        apartmentService.deleteApartment(id);
+    }
+	
+
+}
